@@ -53,7 +53,7 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
         mf.chars()
             .into_iter()
             .enumerate()
-            .for_each(|(col, x)| match x {
+            .for_each(|(col, cell)| match cell {
                 '*' => get_mines(&mut v, row, col, *row_len, *col_len),
                 _ => {}
             })
@@ -78,39 +78,43 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
 fn get_mines(v: &mut Vec<Vec<usize>>, row: usize, col: usize, row_len: usize, col_len: usize) {
     // Left
     if col > 0 {
-        v[row][col - 1] += 1;
+        update_cell(v, row, col - 1);
     }
     // Right
     if col < col_len - 1 {
-        v[row][col + 1] += 1;
+        update_cell(v, row, col + 1);
     }
 
     // Above
     if row > 0 {
-        v[row - 1][col] += 1;
+        update_cell(v, row - 1, col);
     }
     // Beneath
     if row < row_len - 1 {
-        v[row + 1][col] += 1;
+        update_cell(v, row + 1, col);
     }
 
     // Upper left
     if row > 0 && col > 0 {
-        v[row - 1][col - 1] += 1;
+        update_cell(v, row - 1, col - 1);
     }
 
     // Upper right
     if row > 0 && col < col_len - 1 {
-        v[row - 1][col + 1] += 1;
+        update_cell(v, row - 1, col + 1);
     }
 
     // Lower left
     if row < row_len - 1 && col > 0 {
-        v[row + 1][col - 1] += 1;
+        update_cell(v, row + 1, col - 1);
     }
 
     // Lower right
     if row < row_len - 1 && col < col_len - 1 {
-        v[row + 1][col + 1] += 1;
+        update_cell(v, row + 1, col + 1);
     }
+}
+
+fn update_cell(v: &mut Vec<Vec<usize>>, row: usize, col: usize) {
+    v[row][col] += 1;
 }
