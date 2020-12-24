@@ -14,11 +14,25 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
     }
     // Edge cases end.
 
+    // Initialize cells:
+    // If row = 3 and col = 2, then this will produce
+    // v = [
+    //         [0, 0],
+    //         [0, 0],
+    //         [0, 0]
+    //     ]
     let col_zeros = std::iter::repeat(0).take(*col_len);
     let cols = Vec::from_iter(col_zeros);
     let row_zeros = std::iter::repeat(cols).take(*row_len);
     let mut v = Vec::from_iter(row_zeros);
-    println!("{:?}", v);
+
+    // Replace mines(*) with 10:
+    // If the case is ["*.", "..", "**"], then v becomes
+    // [
+    //     [10,  0],
+    //     [ 0,  0],
+    //     [10, 10]
+    // ]
     minefield.iter().enumerate().for_each(|(row, x)| {
         x.chars().into_iter().enumerate().for_each(|(col, y)| {
             if y == '*' {
@@ -26,8 +40,15 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
             }
         })
     });
-    println!("{:?}", v);
 
+    // Find how many mines there are around '.'.
+    // Add 1 to every surrounding cell if found.
+    // For example, using the case above, v will become
+    // [                  [               [
+    //     [10,  1],        [10,  1],        [10,  1],
+    //     [ 1,  1],  =>    [ 2,  2],  =>    [ 3,  3],
+    //     [10, 10]         [10, 11]         [11, 11]
+    // ]                  ]               ]
     minefield.iter().enumerate().for_each(|(row, mf)| {
         mf.chars()
             .into_iter()
@@ -38,7 +59,8 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
             })
     });
 
-    println!("{:?}", v);
+    // Finally convert every row in v into String and append to vec![].
+    // Note: Any cell with more than 10 will be turned into "*".
     let mut ans = vec![];
     v.iter().for_each(|row| {
         let mut res = String::new();
