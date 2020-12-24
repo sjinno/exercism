@@ -21,6 +21,7 @@ fn run_test(test_case: &[&str]) {
 }
 
 #[test]
+#[ignore]
 fn no_rows() {
     #[rustfmt::skip]
     run_test(&[
@@ -59,7 +60,7 @@ fn board_with_only_mines() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn mine_surrounded_by_spaces() {
     #[rustfmt::skip]
     run_test(&[
