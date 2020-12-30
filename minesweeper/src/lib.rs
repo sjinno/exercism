@@ -164,6 +164,7 @@
 #![deny(clippy::pedantic)]
 use std::{char::from_digit, convert::TryFrom};
 
+#[must_use]
 pub fn annotate(minefield: &[&str]) -> Vec<String> {
     (0..minefield.len())
         .map(|y| {
