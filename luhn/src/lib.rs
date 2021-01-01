@@ -1,6 +1,6 @@
 /// Check a Luhn checksum.
 pub fn is_valid(code: &str) -> bool {
-    let code = code.split(" ").collect::<Vec<&str>>().join("");
+    let code = code.replace(" ", "");
 
     // Check if the length is less than 2.
     // If true, return false.
@@ -21,7 +21,7 @@ pub fn is_valid(code: &str) -> bool {
         .rev()
         .enumerate()
         .for_each(|(i, x)| {
-            let x = x as u32 - 48;
+            let x = x.to_digit(10).unwrap();
             if i.rem_euclid(2) == 1 {
                 if x > 4 {
                     sum += 2 * x - 9;
