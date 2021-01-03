@@ -39,6 +39,7 @@ const STAR_SPANGLED_BANNER: [&str; 8] = [
 ];
 
 #[test]
+#[ignore]
 fn test_no_texts() {
     assert_eq!(frequency::frequency(&[], 4), HashMap::new());
 }
@@ -90,7 +91,7 @@ fn test_numbers_dont_count() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn test_all_three_anthems_1_worker() {
     let mut v = Vec::new();
     for anthem in [ODE_AN_DIE_FREUDE, WILHELMUS, STAR_SPANGLED_BANNER].iter() {
