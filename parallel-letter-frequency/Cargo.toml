@@ -4,4 +4,5 @@ name = "parallel-letter-frequency"
 version = "0.0.0"
 
 [dependencies]
-regex = "1"
+# regex = "1"
+crossbeam = "0.8.0"
