@@ -1,4 +1,5 @@
 use crossbeam::thread;
+use rayon::prelude::*;
 use std::collections::HashMap;
 
 pub fn frequency(input: &[&str], worker_count: usize) -> HashMap<char, usize> {
@@ -11,7 +12,7 @@ pub fn frequency(input: &[&str], worker_count: usize) -> HashMap<char, usize> {
     let cap = length.div_euclid(worker_count);
     let mut rem = length.rem_euclid(worker_count);
     let mut workers = Vec::with_capacity(worker_count);
-    let mut iter = input.iter();
+    let mut iter = input.into_iter();
     for _ in 0..worker_count {
         let chunk;
         if rem != 0 {
@@ -50,30 +51,3 @@ pub fn frequency(input: &[&str], worker_count: usize) -> HashMap<char, usize> {
 
     answer
 }
-
-// thread::scope(|s| {
-//     for worker in workers {
-//         let ans = s.spawn(|_| {
-//             let mut hm = HashMap::<char, usize>::new();
-//             worker.into_iter().for_each(|w| {
-//                 w.chars().into_iter().for_each(|c| {
-//                     if c.is_alphabetic() {
-//                         let c = c.to_ascii_lowercase();
-//                         *hm.entry(c).or_insert(0) += 1;
-//                     }
-//                 });
-//             });
-//             hm
-//         });
-//         handles.push(ans.join());
-//     }
-// })
-// .unwrap();
-
-// for handle in handles {
-//     let ans = handle.unwrap();
-//     for (key, value) in ans {
-//         println!("{} {}", key, value);
-//         *answer.entry(key).or_insert(0) += value;
-//     }
-// }
