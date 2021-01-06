@@ -9,14 +9,14 @@ fn test_stating_something() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// ending with whitespace
 fn test_ending_with_whitespace() {
     process_response_case("Okay if like my  spacebar  quite a bit?   ", "Sure.");
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// shouting numbers
 fn test_shouting_numbers() {
     process_response_case("1, 2, 3 GO!", "Whoa, chill out!");
@@ -176,14 +176,14 @@ fn test_using_acronyms_in_regular_speech() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// alternate silence
 fn test_alternate_silence() {
     process_response_case("										", "Fine. Be that way!");
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// prolonged silence
 fn test_prolonged_silence() {
     process_response_case("          ", "Fine. Be that way!");
