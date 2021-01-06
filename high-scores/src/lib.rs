@@ -13,18 +13,27 @@ impl<'a> HighScores<'a> {
     }
 
     pub fn latest(&self) -> Option<u32> {
-        let s = self.scores.into_iter().last()?;
-        Some(*s)
+        // What the heck?
+        self.scores.last().cloned()
+        // let s = self.scores.into_iter().last()?;
+        // Some(*s)
     }
 
     pub fn personal_best(&self) -> Option<u32> {
-        let best = self.scores.into_iter().max()?;
-        Some(*best)
+        // Hmmm...
+        self.scores.iter().max().cloned()
+        // let best = self.scores.into_iter().max()?;
+        // Some(*best)
     }
 
     pub fn personal_top_three(&self) -> Vec<u32> {
-        let mut v = self.scores.clone().to_vec();
-        v.sort_by(|a, b| b.partial_cmp(a).unwrap());
-        v.into_iter().take(3).collect::<Vec<u32>>()
+        // Waaaaaa this is nice!
+        let mut v = self.scores.to_vec();
+        v.sort_unstable_by(|a, b| b.cmp(a));
+        v.truncate(3);
+        v
+        // let mut v = self.scores.clone().to_vec();
+        // v.sort_by(|a, b| b.partial_cmp(a).unwrap());
+        // v.into_iter().take(3).collect::<Vec<u32>>()
     }
 }
