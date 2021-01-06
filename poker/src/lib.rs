@@ -3,8 +3,15 @@
 /// Note the type signature: this function should return _the same_ reference to
 /// the winning hand(s) as were passed in, not reconstructed strings which happen to be equal.
 pub fn winning_hands<'a>(hands: &[&'a str]) -> Option<Vec<&'a str>> {
-    let v: Vec<Vec<&str>> = vec![hands.to_vec()];
-    let number_of_hands = hands.len();
+    let v_hands = hands.to_vec();
+    let num_of_hands = v_hands.len();
+    if num_of_hands == 1 {
+        return Some(v_hands);
+    }
 
-    Some(v[0])
+    for hand in v_hands {
+        println!("{}", hand);
+    }
+
+    None
 }
