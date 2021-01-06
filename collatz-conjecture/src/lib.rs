@@ -1,26 +1,32 @@
 pub fn collatz(n: u64) -> Option<u64> {
-    if n == 0 {
-        return None;
+    match n {
+        0 => None,
+        1 => Some(0),
+        _ => {
+            let mut num = n;
+            (0..)
+                .scan(1, |s, _| {
+                    match num.rem_euclid(2) {
+                        0 => num /= 2,
+                        _ => num = num * 3 + 1,
+                    }
+                    *s += 1;
+                    match num {
+                        1 => None,
+                        _ => Some(*s),
+                    }
+                })
+                .last()
+        }
     }
-
-    if n == 1 {
-        return Some(0);
-    }
-
-    let mut num = n.to_owned();
-    (0..)
-        .scan(1, |s, _| {
-            if num % 2 == 0 {
-                num /= 2;
-            } else {
-                num = num * 3 + 1;
-            }
-            *s += 1;
-            if num != 1 {
-                Some(*s)
-            } else {
-                None
-            }
-        })
-        .last()
 }
+
+// // Community solution using recursion.
+// pub fn collatz(n: u64) -> Option<u64> {
+//     match n {
+//         0 => None,
+//         1 => Some(0),
+//         n if n % 2 == 0 => collatz(n / 2).map(|x| x + 1),
+//         n => collatz(3 * n + 1).map(|x| x + 1),
+//     }
+// }
