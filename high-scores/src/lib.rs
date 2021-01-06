@@ -14,14 +14,14 @@ impl<'a> HighScores<'a> {
 
     pub fn latest(&self) -> Option<u32> {
         // What the heck?
-        self.scores.last().cloned()
+        self.scores.last().copied()
         // let s = self.scores.into_iter().last()?;
         // Some(*s)
     }
 
     pub fn personal_best(&self) -> Option<u32> {
         // Hmmm...
-        self.scores.iter().max().cloned()
+        self.scores.iter().max().copied()
         // let best = self.scores.into_iter().max()?;
         // Some(*best)
     }
