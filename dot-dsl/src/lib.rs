@@ -30,11 +30,20 @@ pub mod graph {
             #[derive(Clone, Debug, PartialEq)]
             pub struct Node<'a> {
                 node: &'a str,
+                attrs: &'a [(&'a str, &'a str)],
             }
 
             impl<'a> Node<'a> {
                 pub fn new(node: &'a str) -> Self {
-                    Node { node: node }
+                    Node {
+                        node: node,
+                        attrs: Default::default(),
+                    }
+                }
+
+                pub fn with_attrs(mut self, attrs: &'a [(&'a str, &'a str)]) -> Self {
+                    self.attrs = attrs;
+                    self
                 }
             }
         }
