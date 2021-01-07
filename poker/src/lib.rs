@@ -50,7 +50,12 @@ impl Rank for Hand {
         true
     }
     fn four_of_a_kind(&self) -> bool {
-        false
+        let first = self[0].number;
+        let second = self[1].number;
+        if first == second {
+            return self[2].number == second && self[3].number == second;
+        }
+        self[2].number == second && self[3].number == second && self[4].number == second
     }
     fn full_house(&self) -> bool {
         false
@@ -85,11 +90,15 @@ pub fn winning_hands<'a>(hands: &[&'a str]) -> Option<Vec<&'a str>> {
     let haands = organize_and_sort_hands(hands);
     println!("{:#?}", haands);
 
-    for (i, hand) in haands.iter().enumerate() {
-        // println!("{}", hand.straight_flush());
-        if hand.straight_flush() {
-            return Some(vec![v_hands[i]]);
-        }
+    for (_i, hand) in haands.iter().enumerate() {
+        println!("Straight flush: {}", hand.straight_flush());
+        println!("Four of a kind: {}", hand.four_of_a_kind());
+
+        // I will probably have to save it in a stack
+        // for a case where there are multiple straight flushes....
+        // if hand.straight_flush() {
+        //     return Some(vec![v_hands[i]]);
+        // }
     }
 
     None
