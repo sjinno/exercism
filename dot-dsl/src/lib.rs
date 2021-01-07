@@ -5,21 +5,33 @@ pub mod graph {
     use crate::graph::graph_items::node::Node;
     use std::collections::HashMap;
 
-    #[derive(Clone, Debug, PartialEq)]
-    struct Attribute<'a> {
+    #[derive(Clone, Debug, Default, PartialEq)]
+    pub struct Attribute<'a> {
         attr: &'a [(&'a str, &'a str)],
     }
 
-    // impl<'a> PartialEq<HashMap<String, String>> for &'a [(&'a str, &'a str)] {
-    //     fn eq(&self, other: &HashMap<String, String>) -> bool {
-    //         for (key, value) in other {
-    //             if key != self[0].0 || value != self[0].1 {
-    //                 return false;
-    //             }
-    //         }
-    //         true
-    //     }
-    // }
+    impl<'a> Attribute<'a> {
+        pub fn is_empty(&self) -> bool {
+            self.attr.len() == 0
+        }
+    }
+
+    impl<'a> Into<Attribute<'a>> for &'a [(&'a str, &'a str)] {
+        fn into(self) -> Attribute<'a> {
+            Attribute { attr: self }
+        }
+    }
+
+    impl<'a> PartialEq<Attribute<'a>> for HashMap<String, String> {
+        fn eq(&self, other: &Attribute<'a>) -> bool {
+            for (key, value) in self {
+                if key != other.attr[0].0 || value != other.attr[0].1 {
+                    return false;
+                }
+            }
+            true
+        }
+    }
 
     impl<'a> PartialEq<HashMap<String, String>> for Attribute<'a> {
         fn eq(&self, other: &HashMap<String, String>) -> bool {
@@ -36,7 +48,7 @@ pub mod graph {
     pub struct Graph<'a> {
         pub nodes: Vec<Node<'a>>,
         pub edges: Vec<Edge<'a>>,
-        pub attrs: &'a [(&'a str, &'a str)],
+        pub attrs: Attribute<'a>,
     }
 
     impl<'a> Graph<'a> {
@@ -59,7 +71,7 @@ pub mod graph {
         }
 
         pub fn with_attrs(mut self, attrs: &'a [(&'a str, &'a str)]) -> Self {
-            self.attrs = attrs;
+            self.attrs = attrs.into();
             self
         }
     }
@@ -98,3 +110,65 @@ pub mod graph {
         }
     }
 }
+
+// pub trait PartialEq<Rhs = Self>
+// where
+//     Rhs: ?Sized,
+// {
+//     fn eq(&self, other: &Rhs) -> bool;
+
+//     fn ne(&self, other: &Rhs) -> bool {
+//         !self.eq(other)
+//     }
+// }
+
+// pub trait PartialEq<Rhs: ?Sized = Self> {
+//     fn eq(&self, other: &Rhs) -> bool;
+//     fn ne(&self, other: &Rhs) -> bool {
+//         !self.eq(other)
+//     }
+// }
+
+// impl PartialEq<&[(&str, &str)]> for HashMap<String, String> {
+//     fn eq(&self, other: &&[(&str, &str)]) -> bool {
+//         for (key, value) in self {
+//             if key != other[0].0 || value != other[0].1 {
+//                 return false;
+//             }
+//         }
+//         true
+//     }
+// }
+
+// impl<'a> PartialEq<Graph<'a>> for HashMap<String, String> {
+//     fn eq(&self, other: &Graph) -> bool {
+//         for (key, value) in self {
+//             if key != other.attrs[0].0 || value != other.attrs[0].1 {
+//                 return false;
+//             }
+//         }
+//         true
+//     }
+// }
+
+// impl<'a> PartialEq<HashMap<String, String>> for Graph<'a> {
+//     fn eq(&self, other: &HashMap<String, String>) -> bool {
+//         for (key, value) in other {
+//             if key != self.attrs[0].0 || value != self.attrs[0].1 {
+//                 return false;
+//             }
+//         }
+//         true
+//     }
+// }
+
+// impl<'a> PartialEq<HashMap<String, String>> for Attribute<'a> {
+//     fn eq(&self, other: &HashMap<String, String>) -> bool {
+//         for (key, value) in other {
+//             if key != self.attr[0].0 || value != self.attr[0].1 {
+//                 return false;
+//             }
+//         }
+//         true
+//     }
+// }
