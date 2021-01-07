@@ -23,6 +23,11 @@ pub mod graph {
             self.nodes = nodes.to_owned();
             self
         }
+
+        pub fn with_edges(mut self, edges: &'a Vec<Edge<'a>>) -> Self {
+            self.edges = edges.to_owned();
+            self
+        }
     }
 
     pub mod graph_items {
@@ -48,6 +53,7 @@ pub mod graph {
             }
         }
         pub mod edge {
+            #[derive(Clone, Debug, PartialEq)]
             pub struct Edge<'a>(&'a str, &'a str);
 
             impl<'a> Edge<'a> {
