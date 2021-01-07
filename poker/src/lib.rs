@@ -38,6 +38,43 @@ trait Rank {
     fn high_card(&self) -> bool;
 }
 
+impl Rank for Hand {
+    fn straight_flush(&self) -> bool {
+        let mut increment_counter = self.0[0].number;
+        for hand in &self.0 {
+            if &hand.number != &increment_counter {
+                return false;
+            }
+            increment_counter += 1;
+        }
+        true
+    }
+    fn four_of_a_kind(&self) -> bool {
+        false
+    }
+    fn full_house(&self) -> bool {
+        false
+    }
+    fn flush(&self) -> bool {
+        false
+    }
+    fn straight(&self) -> bool {
+        false
+    }
+    fn three_of_a_kind(&self) -> bool {
+        false
+    }
+    fn two_pair(&self) -> bool {
+        false
+    }
+    fn one_pair(&self) -> bool {
+        false
+    }
+    fn high_card(&self) -> bool {
+        false
+    }
+}
+
 pub fn winning_hands<'a>(hands: &[&'a str]) -> Option<Vec<&'a str>> {
     let v_hands = hands.to_vec();
     let num_of_hands = v_hands.len();
