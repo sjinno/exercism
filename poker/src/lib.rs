@@ -24,7 +24,7 @@ struct Card {
     suit: String,
 }
 
-struct Hand(Vec<Card>);
+type Hand = Vec<Card>;
 
 trait Rank {
     fn straight_flush(&self) -> bool;
@@ -40,8 +40,8 @@ trait Rank {
 
 impl Rank for Hand {
     fn straight_flush(&self) -> bool {
-        let mut increment_counter = self.0[0].number;
-        for hand in &self.0 {
+        let mut increment_counter = self[0].number;
+        for hand in self {
             if &hand.number != &increment_counter {
                 return false;
             }
@@ -82,9 +82,15 @@ pub fn winning_hands<'a>(hands: &[&'a str]) -> Option<Vec<&'a str>> {
         return Some(v_hands);
     }
     // println!("{:?}", &v_hands);
-    let cards = organize_and_sort_hands(hands);
+    let haands = organize_and_sort_hands(hands);
+    println!("{:#?}", haands);
 
-    println!("{:#?}", cards);
+    for (i, hand) in haands.iter().enumerate() {
+        // println!("{}", hand.straight_flush());
+        if hand.straight_flush() {
+            return Some(vec![v_hands[i]]);
+        }
+    }
 
     None
 }
