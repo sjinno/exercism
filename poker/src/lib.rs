@@ -1,11 +1,5 @@
 use std::cmp::Ordering;
 
-#[derive(Debug, Eq)]
-struct Card {
-    number: u8,
-    suit: String,
-}
-
 impl Ord for Card {
     fn cmp(&self, other: &Self) -> Ordering {
         self.number.cmp(&other.number)
@@ -24,6 +18,26 @@ impl PartialEq for Card {
     }
 }
 
+#[derive(Debug, Eq)]
+struct Card {
+    number: u8,
+    suit: String,
+}
+
+struct Hand(Vec<Card>);
+
+trait Rank {
+    fn straight_flush(&self) -> bool;
+    fn four_of_a_kind(&self) -> bool;
+    fn full_house(&self) -> bool;
+    fn flush(&self) -> bool;
+    fn straight(&self) -> bool;
+    fn three_of_a_kind(&self) -> bool;
+    fn two_pair(&self) -> bool;
+    fn one_pair(&self) -> bool;
+    fn high_card(&self) -> bool;
+}
+
 pub fn winning_hands<'a>(hands: &[&'a str]) -> Option<Vec<&'a str>> {
     let v_hands = hands.to_vec();
     let num_of_hands = v_hands.len();
@@ -33,7 +47,7 @@ pub fn winning_hands<'a>(hands: &[&'a str]) -> Option<Vec<&'a str>> {
     // println!("{:?}", &v_hands);
     let cards = organize_and_sort_hands(hands);
 
-    // println!("{:#?}", cards);
+    println!("{:#?}", cards);
 
     None
 }
