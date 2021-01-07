@@ -74,13 +74,19 @@ pub mod graph {
             self.attrs = attrs.into();
             self
         }
+
+        pub fn get_node(&self, node: &'a str) -> Result<(), &'a str> {
+            let index = self.nodes.iter().position(|n| n.node == node).unwrap();
+            // println!("{}", index);
+            Ok(())
+        }
     }
 
     pub mod graph_items {
         pub mod node {
             #[derive(Clone, Debug, PartialEq)]
             pub struct Node<'a> {
-                node: &'a str,
+                pub node: &'a str,
                 attrs: &'a [(&'a str, &'a str)],
             }
 

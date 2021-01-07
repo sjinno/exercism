@@ -76,7 +76,7 @@ fn test_graph_with_one_attribute() {
 }
 
 // #[test]
-// #[ignore]
+// // #[ignore]
 // fn test_graph_with_attributes() {
 //     let nodes = vec![
 //         Node::new("a").with_attrs(&[("color", "green")]),
@@ -122,23 +122,23 @@ fn test_graph_with_one_attribute() {
 //     assert_eq!(graph.attrs, expected_attrs);
 // }
 
-// #[test]
-// #[ignore]
-// fn test_graph_stores_attributes() {
-//     let attributes = [("foo", "bar"), ("bat", "baz"), ("bim", "bef")];
-//     let graph = Graph::new().with_nodes(
-//         &["a", "b", "c"]
-//             .iter()
-//             .zip(attributes.iter())
-//             .map(|(name, &attr)| Node::new(&name).with_attrs(&[attr]))
-//             .collect::<Vec<_>>(),
-//     );
+#[test]
+#[ignore]
+fn test_graph_stores_attributes() {
+    let attributes = [("foo", "bar"), ("bat", "baz"), ("bim", "bef")];
+    let graph = Graph::new().with_nodes(
+        &["a", "b", "c"]
+            .iter()
+            .zip(attributes.iter())
+            .map(|(name, &attr)| Node::new(&name).with_attrs(&[attr]))
+            .collect::<Vec<_>>(),
+    );
 
-//     assert_eq!(
-//         graph
-//             .get_node("c")
-//             .expect("node must be stored")
-//             .get_attr("bim"),
-//         Some("bef")
-//     );
-// }
+    assert_eq!(
+        graph
+            .get_node("c")
+            .expect("node must be stored")
+            .get_attr("bim"),
+        Some("bef")
+    );
+}
