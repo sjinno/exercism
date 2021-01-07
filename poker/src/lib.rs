@@ -1,17 +1,75 @@
-/// Given a list of poker hands, return a list of those hands which win.
-///
-/// Note the type signature: this function should return _the same_ reference to
-/// the winning hand(s) as were passed in, not reconstructed strings which happen to be equal.
+use std::cmp::Ordering;
+
+#[derive(Debug, Eq)]
+struct Card {
+    number: u8,
+    suit: String,
+}
+
+impl Ord for Card {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.number.cmp(&other.number)
+    }
+}
+
+impl PartialOrd for Card {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.number.partial_cmp(&other.number)
+    }
+}
+
+impl PartialEq for Card {
+    fn eq(&self, other: &Self) -> bool {
+        self.number == other.number
+    }
+}
+
 pub fn winning_hands<'a>(hands: &[&'a str]) -> Option<Vec<&'a str>> {
     let v_hands = hands.to_vec();
     let num_of_hands = v_hands.len();
     if num_of_hands == 1 {
         return Some(v_hands);
     }
+    // println!("{:?}", &v_hands);
+    let cards = organize_and_sort_hands(hands);
 
-    for hand in v_hands {
-        println!("{}", hand);
-    }
+    // println!("{:#?}", cards);
 
     None
+}
+
+fn organize_and_sort_hands<'a>(hands: &[&'a str]) -> Vec<Vec<Card>> {
+    let mut cards = Vec::<Vec<Card>>::new();
+    for hand in hands {
+        let hand_into_cards = hand.split(" ").collect::<Vec<_>>();
+        let mut tmp = Vec::<Card>::new();
+        hand_into_cards.iter().for_each(|c| {
+            let card;
+            let mut card_in_chars = c.chars();
+            if c.len() == 3 {
+                card = Card {
+                    number: 10,
+                    suit: card_in_chars.last().unwrap().to_string(),
+                };
+            } else {
+                let num = card_in_chars.next().unwrap();
+                let num = match num {
+                    'J' => 11,
+                    'Q' => 12,
+                    'K' => 13,
+                    'A' => 1,
+                    _ => num as u8 - 48,
+                };
+                let suit = card_in_chars.next().unwrap().to_string();
+                card = Card {
+                    number: num,
+                    suit: suit,
+                };
+            }
+            tmp.push(card);
+        });
+        tmp.sort_by(|a, b| a.number.cmp(&b.number));
+        cards.push(tmp);
+    }
+    cards
 }
