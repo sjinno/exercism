@@ -6,7 +6,7 @@ pub mod graph {
 
     pub struct Graph<'a> {
         pub nodes: Vec<Node<'a>>,
-        pub edges: Vec<Edge>,
+        pub edges: Vec<Edge<'a>>,
         pub attrs: &'a [&'a str],
     }
 
@@ -48,7 +48,13 @@ pub mod graph {
             }
         }
         pub mod edge {
-            pub struct Edge;
+            pub struct Edge<'a>(&'a str, &'a str);
+
+            impl<'a> Edge<'a> {
+                pub fn new(head: &'a str, tail: &'a str) -> Self {
+                    Edge(head, tail)
+                }
+            }
         }
     }
 }

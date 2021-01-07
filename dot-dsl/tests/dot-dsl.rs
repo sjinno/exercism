@@ -45,19 +45,19 @@ fn test_graph_with_one_node_with_keywords() {
     );
 }
 
-// #[test]
+#[test]
 // #[ignore]
-// fn test_graph_with_one_edge() {
-//     let edges = vec![Edge::new("a", "b")];
+fn test_graph_with_one_edge() {
+    let edges = vec![Edge::new("a", "b")];
 
-//     let graph = Graph::new().with_edges(&edges);
+    let graph = Graph::new().with_edges(&edges);
 
-//     assert!(graph.nodes.is_empty());
+    assert!(graph.nodes.is_empty());
 
-//     assert!(graph.attrs.is_empty());
+    assert!(graph.attrs.is_empty());
 
-//     assert_eq!(graph.edges, vec![Edge::new("a", "b")]);
-// }
+    assert_eq!(graph.edges, vec![Edge::new("a", "b")]);
+}
 
 // #[test]
 // #[ignore]
