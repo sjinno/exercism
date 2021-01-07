@@ -4,6 +4,8 @@ name = "diffie-hellman"
 version = "0.1.0"
 
 [dependencies]
+num = "0.3.1"
+rand = "0.8.1"
 
 [features]
 big-primes = []

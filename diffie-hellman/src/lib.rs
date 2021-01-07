@@ -1,21 +1,21 @@
+use num::{BigUint, ToPrimitive};
+use rand::{thread_rng, Rng};
+
 pub fn private_key(p: u64) -> u64 {
-    unimplemented!("Pick a private key greater than 1 and less than {}", p)
+    let mut rng = thread_rng();
+    rng.gen_range(2..p)
 }
 
 pub fn public_key(p: u64, g: u64, a: u64) -> u64 {
-    unimplemented!(
-        "Calculate public key using prime numbers {} and {}, and private key {}",
-        p,
-        g,
-        a
-    )
+    let p = BigUint::from(p);
+    let g = BigUint::from(g);
+    let a = BigUint::from(a);
+    g.modpow(&a, &p).to_u64().unwrap()
 }
 
 pub fn secret(p: u64, b_pub: u64, a: u64) -> u64 {
-    unimplemented!(
-        "Calculate secret key using prime number {}, public key {}, and private key {}",
-        p,
-        b_pub,
-        a
-    )
+    let p = BigUint::from(p);
+    let b_pub = BigUint::from(b_pub);
+    let a = BigUint::from(a);
+    b_pub.modpow(&a, &p).to_u64().unwrap()
 }
