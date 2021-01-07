@@ -3,11 +3,40 @@ pub mod graph {
     // pub use graph_items::*;
     use crate::graph::graph_items::edge::Edge;
     use crate::graph::graph_items::node::Node;
+    use std::collections::HashMap;
 
+    #[derive(Clone, Debug, PartialEq)]
+    struct Attribute<'a> {
+        attr: &'a [(&'a str, &'a str)],
+    }
+
+    // impl<'a> PartialEq<HashMap<String, String>> for &'a [(&'a str, &'a str)] {
+    //     fn eq(&self, other: &HashMap<String, String>) -> bool {
+    //         for (key, value) in other {
+    //             if key != self[0].0 || value != self[0].1 {
+    //                 return false;
+    //             }
+    //         }
+    //         true
+    //     }
+    // }
+
+    impl<'a> PartialEq<HashMap<String, String>> for Attribute<'a> {
+        fn eq(&self, other: &HashMap<String, String>) -> bool {
+            for (key, value) in other {
+                if key != self.attr[0].0 || value != self.attr[0].1 {
+                    return false;
+                }
+            }
+            true
+        }
+    }
+
+    #[derive(Clone, Debug, PartialEq)]
     pub struct Graph<'a> {
         pub nodes: Vec<Node<'a>>,
         pub edges: Vec<Edge<'a>>,
-        pub attrs: &'a [&'a str],
+        pub attrs: &'a [(&'a str, &'a str)],
     }
 
     impl<'a> Graph<'a> {
@@ -26,6 +55,11 @@ pub mod graph {
 
         pub fn with_edges(mut self, edges: &'a Vec<Edge<'a>>) -> Self {
             self.edges = edges.to_owned();
+            self
+        }
+
+        pub fn with_attrs(mut self, attrs: &'a [(&'a str, &'a str)]) -> Self {
+            self.attrs = attrs;
             self
         }
     }
