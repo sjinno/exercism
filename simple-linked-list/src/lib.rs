@@ -1,5 +1,5 @@
 use std::iter::FromIterator;
-use std::mem;
+// use std::mem;
 
 pub struct SimpleLinkedList<T> {
     head: Option<Box<Node<T>>>,
@@ -54,14 +54,23 @@ impl<T> SimpleLinkedList<T> {
     }
 
     pub fn rev(mut self) -> SimpleLinkedList<T> {
+        // let mut prev = None;
+        // while let Some(head) = &mut self.head {
+        //     mem::swap(&mut head.next, &mut prev);
+        //     if prev.is_none() {
+        //         break;
+        //     }
+        //     mem::swap(&mut prev, &mut self.head);
+        // }
+        // self
         let mut prev = None;
-        while let Some(head) = &mut self.head {
-            mem::swap(&mut head.next, &mut prev);
-            if prev.is_none() {
-                break;
-            }
-            mem::swap(&mut prev, &mut self.head);
+        while let Some(mut curr) = self.head.take() {
+            let next = curr.next.take();
+            curr.next = prev;
+            prev = Some(curr);
+            self.head = next;
         }
+        self.head = prev;
         self
     }
 }
