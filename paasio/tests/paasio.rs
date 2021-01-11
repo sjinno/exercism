@@ -24,7 +24,7 @@ macro_rules! test_read {
                 // 2: first to read all the data, second to check that
                 // there wasn't any more pending data which simply didn't
                 // fit into the existing buffer
-                // assert_eq!(2, reader.reads());
+                assert_eq!(2, reader.reads());
                 assert_eq!(size, reader.bytes_through());
             }
 
@@ -164,7 +164,7 @@ fn test_create_stats() {
 }
 
 test_read!(
-    // #[ignore] 
+    // #[ignore]
     read_string (
     "Twas brillig, and the slithy toves/Did gyre and gimble in the wabe:/All mimsy were the borogoves,/And the mome raths outgrabe.".as_bytes(),
     |d: &[u8]| d.len()
