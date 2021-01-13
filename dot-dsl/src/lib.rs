@@ -1,3 +1,18 @@
+macro_rules! attributes {
+    ($cls:ident, $attrs:expr) => {
+        Self {
+            attrs: $attrs
+                .iter()
+                .map(|attr| {
+                    let (key, val) = attr;
+                    (key.to_string(), val.to_string())
+                })
+                .collect(),
+            ..$cls
+        }
+    };
+}
+
 pub mod graph {
     use graph_items::edge::Edge;
     use graph_items::node::Node;
@@ -33,16 +48,7 @@ pub mod graph {
         }
 
         pub fn with_attrs(self, attrs: &[(&str, &str)]) -> Self {
-            Self {
-                attrs: attrs
-                    .iter()
-                    .map(|attr| {
-                        let (key, val) = attr;
-                        (key.to_string(), val.to_string())
-                    })
-                    .collect(),
-                ..self
-            }
+            attributes!(self, attrs)
         }
 
         pub fn get_node(self, name: &str) -> Option<Node> {
@@ -73,16 +79,7 @@ pub mod graph {
                 }
 
                 pub fn with_attrs(self, attrs: &[(&str, &str)]) -> Self {
-                    Self {
-                        attrs: attrs
-                            .iter()
-                            .map(|attr| {
-                                let (key, val) = attr;
-                                (key.to_string(), val.to_string())
-                            })
-                            .collect(),
-                        ..self
-                    }
+                    attributes!(self, attrs)
                 }
             }
         }
@@ -104,16 +101,7 @@ pub mod graph {
                 }
 
                 pub fn with_attrs(self, attrs: &[(&str, &str)]) -> Self {
-                    Self {
-                        attrs: attrs
-                            .iter()
-                            .map(|attr| {
-                                let (key, val) = attr;
-                                (key.to_string(), val.to_string())
-                            })
-                            .collect(),
-                        ..self
-                    }
+                    attributes!(self, attrs)
                 }
 
                 pub fn get_attr(&self, k: &str) -> Option<&str> {
