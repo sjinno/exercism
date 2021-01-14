@@ -1,30 +1,47 @@
-// This annotation prevents Clippy from warning us that `School` has a
-// `fn new()` with no arguments, but doesn't implement the `Default` trait.
-//
-// Normally, it's good practice to just do what Clippy tells you, but in this
-// case, we want to keep things relatively simple. The `Default` trait is not the point
-// of this exercise.
+use std::collections::HashMap;
+
 #[allow(clippy::new_without_default)]
-pub struct School {}
+#[derive(Clone, Debug)]
+pub struct School {
+    students: HashMap<u32, Vec<String>>,
+}
 
 impl School {
     pub fn new() -> School {
-        unimplemented!()
+        Self {
+            students: Default::default(),
+        }
     }
 
     pub fn add(&mut self, grade: u32, student: &str) {
-        unimplemented!("Add {} to the roster for {}", student, grade)
+        if let Some(s) = self.students.get_mut(&grade) {
+            s.push(student.to_string());
+        } else {
+            self.students
+                .entry(grade)
+                .or_insert(vec![student.to_string()]);
+        }
+        // println!("{:?}", self.students);
     }
 
     pub fn grades(&self) -> Vec<u32> {
-        unimplemented!()
+        let mut grades = self
+            .students
+            .keys()
+            .map(|grade| *grade)
+            .collect::<Vec<u32>>();
+        grades.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        grades
     }
 
-    // If `grade` returned a reference, `School` would be forced to keep a `Vec<String>`
-    // internally to lend out. By returning an owned vector of owned `String`s instead,
-    // the internal structure can be completely arbitrary. The tradeoff is that some data
-    // must be copied each time `grade` is called.
     pub fn grade(&self, grade: u32) -> Vec<String> {
-        unimplemented!("Return the list of students in {}", grade)
+        // println!("{:?}", self.students);
+        if let Some(s) = self.students.get(&grade) {
+            let mut students = s.iter().map(|name| name.clone()).collect::<Vec<String>>();
+            students.sort_by(|a, b| a.to_lowercase().cmp(&b.to_lowercase()));
+            students
+        } else {
+            Vec::<String>::new()
+        }
     }
 }
