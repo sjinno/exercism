@@ -6,6 +6,12 @@ pub struct School {
     students: HashMap<u32, Vec<String>>,
 }
 
+impl Default for School {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl School {
     pub fn new() -> School {
         Self {
@@ -19,26 +25,20 @@ impl School {
         } else {
             self.students
                 .entry(grade)
-                .or_insert(vec![student.to_string()]);
+                .or_insert_with(|| vec![student.to_string()]);
         }
-        // println!("{:?}", self.students);
     }
 
     pub fn grades(&self) -> Vec<u32> {
-        let mut grades = self
-            .students
-            .keys()
-            .map(|grade| *grade)
-            .collect::<Vec<u32>>();
+        let mut grades = self.students.keys().copied().collect::<Vec<u32>>();
         grades.sort_by(|a, b| a.partial_cmp(b).unwrap());
         grades
     }
 
     pub fn grade(&self, grade: u32) -> Vec<String> {
-        // println!("{:?}", self.students);
         if let Some(s) = self.students.get(&grade) {
-            let mut students = s.iter().map(|name| name.clone()).collect::<Vec<String>>();
-            students.sort_by(|a, b| a.to_lowercase().cmp(&b.to_lowercase()));
+            let mut students = s.to_vec();
+            students.sort_by_key(|a| a.to_lowercase());
             students
         } else {
             Vec::<String>::new()

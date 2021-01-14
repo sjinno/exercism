@@ -29,26 +29,26 @@
 //     return primes[n as usize];
 // }
 
-use concurrent_prime_sieve::collection;
+// use concurrent_prime_sieve::collection;
 
-pub fn nth(n: u32) -> u32 {
-    if n > 1000 {
-        let primes = collection::primes_concurrently(n as usize * 11, 8);
-        return primes[n as usize] as u32;
-    }
-    let primes = collection::primes(n as usize * 4);
-    primes[n as usize] as u32
+// pub fn nth(n: u32) -> u32 {
+//     if n > 1000 {
+//         let primes = collection::primes_concurrently(n as usize * 11, 8);
+//         return primes[n as usize] as u32;
+//     }
+//     let primes = collection::primes(n as usize * 4);
+//     primes[n as usize] as u32
+// }
+
+use std::ops::RangeFrom;
+
+pub fn nth(n: u32) -> Option<u32> {
+    (RangeFrom { start: 2 })
+        .filter(|x| is_prime(x))
+        .take(n as usize)
+        .last()
 }
 
-// use std::ops::RangeFrom;
-
-// pub fn nth(n: u32) -> Option<u32> {
-//     (RangeFrom { start: 2 })
-//         .filter(|x| is_prime(x))
-//         .take(n as usize)
-//         .last()
-// }
-
-// fn is_prime(n: &u32) -> bool {
-//     !(2..*n).any(|x| n % x == 0)
-// }
+fn is_prime(n: &u32) -> bool {
+    !(2..*n).any(|x| n % x == 0)
+}

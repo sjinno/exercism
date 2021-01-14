@@ -13,7 +13,7 @@ pub fn anagrams_for<'a>(word: &str, possible_anagrams: &[&'a str]) -> HashSet<&'
             }
 
             // If split_word is empty, insert it into the output Hashset.
-            if split_word.len() == 0 {
+            if split_word.is_empty() {
                 output.insert(anagram);
             }
         }

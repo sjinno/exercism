@@ -16,7 +16,7 @@ pub fn raindrops(n: usize) -> String {
         return n.to_string();
     }
 
-    s.to_string()
+    s
 
     // let mut s = String::new();
     // let pling_plang_plong = [("Pling", 3), ("Plang", 5), ("Plong", 7)];

@@ -3,7 +3,6 @@ use std::iter::successors;
 pub fn square_of_sum(n: u32) -> u32 {
     // (1..n + 1).into_iter().fold(0, |acc, x: u32| acc + x).pow(2)
     successors(Some(1), |x: &u32| Some(x + 1))
-        .map(|x| x)
         .take(n as usize)
         .sum::<u32>()
         .pow(2)

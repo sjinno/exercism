@@ -36,6 +36,14 @@ impl<R: Read> Read for ReadStats<R> {
         let bytes = self.wrapped.read(buf)?;
         self.bytes += bytes;
         self.ops += 1;
+
+        let s = match std::str::from_utf8(buf) {
+            Ok(v) => v,
+            Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
+        };
+
+        println!("result: {}", s);
+
         Ok(bytes)
     }
 }

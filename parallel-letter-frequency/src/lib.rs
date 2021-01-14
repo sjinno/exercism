@@ -1,5 +1,4 @@
 use crossbeam::thread;
-use rayon::prelude::*;
 use std::collections::HashMap;
 
 pub fn frequency(input: &[&str], worker_count: usize) -> HashMap<char, usize> {
@@ -12,7 +11,7 @@ pub fn frequency(input: &[&str], worker_count: usize) -> HashMap<char, usize> {
     let cap = length.div_euclid(worker_count);
     let mut rem = length.rem_euclid(worker_count);
     let mut workers = Vec::with_capacity(worker_count);
-    let mut iter = input.into_iter();
+    let mut iter = input.iter();
     for _ in 0..worker_count {
         let chunk;
         if rem != 0 {
