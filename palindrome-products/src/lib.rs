@@ -1,67 +1,83 @@
 #[derive(Debug, PartialEq, Eq)]
 pub struct Palindrome {
-    smallest: Vec<(usize, usize)>,
-    largest: Vec<(usize, usize)>,
+    val: u64,
+    factors: Vec<(u64, u64)>,
 }
 
 impl Palindrome {
     pub fn new(a: u64, b: u64) -> Palindrome {
-        unimplemented!("create a palindrome with factors ({}, {})", a, b)
+        Self {
+            val: a * b,
+            factors: vec![(a, b)],
+        }
     }
 
     pub fn value(&self) -> u64 {
-        unimplemented!("return the value of this palindrome")
+        self.val
     }
 
     pub fn insert(&mut self, a: u64, b: u64) {
-        unimplemented!("insert new factors ({}, {}) into this palindrome", a, b)
+        self.factors.push((a, b))
     }
 }
 
 pub fn palindrome_products(min: u64, max: u64) -> Option<(Palindrome, Palindrome)> {
-    let smallest = std::f64::INFINITY;
-    let mut smallest_factors = Vec::<(u64, u64)>::new();
+    let mut sm = Palindrome::new(max, max);
+    let mut sm_found = false;
+    let mut lg = Palindrome::new(0, 0);
+
     for a in min..=max {
         for b in min..=max {
-            let ab = a as f64 * b as f64;
-            let pal = ab.clone().to_string().chars().collect::<Vec<char>>();
-            let reversed = pal.clone().into_iter().rev().collect::<Vec<char>>();
-            if pal == reversed {
-                if ab < smallest {
-                    smallest_factors.push((a, b));
-                    break;
-                }
+            let ab = a * b;
+            let p = ab.to_string();
+            let reversed = p.clone().chars().rev().collect::<String>();
+            if p == reversed {
+                sm.factors = vec![(b, a)];
+                sm.val = ab;
+                sm_found = true;
+                break;
             }
         }
-        if !smallest_factors.is_empty() {
+        if sm_found {
             break;
         }
     }
 
     let mut largest = 0;
-    let mut largest_factors = vec![];
+    let mut count = 0;
     for a in (min..=max).rev() {
         for b in (min..=max).rev() {
             let ab = a * b;
-            let pal = ab.to_string().chars().collect::<Vec<char>>();
-            let reversed = pal.clone().into_iter().rev().collect::<Vec<char>>();
-            if pal == reversed {
+            let p = ab.to_string();
+            let reversed = p.clone().chars().rev().collect::<String>();
+            if p == reversed {
                 if ab > largest {
                     largest = ab;
-                    largest_factors.clear();
-                    largest_factors.push((a, b));
+                    lg.factors = vec![(b, a)];
+                    lg.val = ab;
+                    count += 1;
                 } else if ab == largest {
-                    largest_factors.push((a, b));
+                    lg.factors.push((b, a));
+                    count += 1;
                 }
             }
-            if largest_factors.len() == 2 {
+            if count == 2 {
                 break;
             }
         }
-        if largest_factors.len() == 2 {
+        if count == 2 {
             break;
         }
     }
 
-    None
+    if lg.factors.len() == 2 {
+        if lg.factors[0].0 == lg.factors[1].1 {
+            lg.factors.remove(1);
+        }
+    }
+
+    if !sm_found {
+        return None;
+    }
+    Some((sm, lg))
 }
