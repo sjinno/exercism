@@ -7,97 +7,57 @@ pub enum Direction {
 }
 
 pub struct Robot {
-    position: (i32, i32),
+    x: i32,
+    y: i32,
     direction: Direction,
 }
 
 impl Robot {
     pub fn new(x: i32, y: i32, d: Direction) -> Self {
-        Self {
-            position: (x, y),
-            direction: d,
-        }
+        Self { x, y, direction: d }
     }
 
+    #[rustfmt::skip]
     pub fn turn_right(self) -> Self {
         match self.direction {
-            Direction::North => Self {
-                direction: Direction::East,
-                ..self
-            },
-            Direction::East => Self {
-                direction: Direction::South,
-                ..self
-            },
-            Direction::South => Self {
-                direction: Direction::West,
-                ..self
-            },
-            Direction::West => Self {
-                direction: Direction::North,
-                ..self
-            },
+            Direction::North => Self { direction: Direction::East,  ..self },
+            Direction::East  => Self { direction: Direction::South, ..self },
+            Direction::South => Self { direction: Direction::West,  ..self },
+            Direction::West  => Self { direction: Direction::North, ..self },
         }
     }
 
+    #[rustfmt::skip]
     pub fn turn_left(self) -> Self {
         match self.direction {
-            Direction::North => Self {
-                direction: Direction::West,
-                ..self
-            },
-            Direction::West => Self {
-                direction: Direction::South,
-                ..self
-            },
-            Direction::South => Self {
-                direction: Direction::East,
-                ..self
-            },
-            Direction::East => Self {
-                direction: Direction::North,
-                ..self
-            },
+            Direction::North => Self { direction: Direction::West,  ..self },
+            Direction::West  => Self { direction: Direction::South, ..self },
+            Direction::South => Self { direction: Direction::East,  ..self },
+            Direction::East  => Self { direction: Direction::North, ..self },
         }
     }
 
+    #[rustfmt::skip]
     pub fn advance(self) -> Self {
         match self.direction {
-            Direction::North => Self {
-                position: (self.position.0, self.position.1 + 1),
-                ..self
-            },
-            Direction::East => Self {
-                position: (self.position.0 + 1, self.position.1),
-                ..self
-            },
-            Direction::South => Self {
-                position: (self.position.0, self.position.1 - 1),
-                ..self
-            },
-            Direction::West => Self {
-                position: (self.position.0 - 1, self.position.1),
-                ..self
-            },
+            Direction::North => Self { y: self.y + 1, ..self },
+            Direction::East =>  Self { x: self.x + 1, ..self },
+            Direction::South => Self { y: self.y - 1, ..self },
+            Direction::West =>  Self { x: self.x - 1, ..self },
         }
     }
 
     pub fn instructions(self, instructions: &str) -> Self {
-        let mut curr = self;
-
-        for i in instructions.chars() {
-            match i {
-                'R' => curr = curr.turn_right(),
-                'L' => curr = curr.turn_left(),
-                'A' => curr = curr.advance(),
-                _ => {}
-            }
-        }
-        curr
+        instructions.chars().fold(self, |robot, c| match c {
+            'R' => robot.turn_right(),
+            'L' => robot.turn_left(),
+            'A' => robot.advance(),
+            _ => robot,
+        })
     }
 
     pub fn position(&self) -> (i32, i32) {
-        self.position
+        (self.x, self.y)
     }
 
     pub fn direction(&self) -> &Direction {
