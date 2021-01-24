@@ -14,15 +14,15 @@ pub fn classify(num: u64) -> Option<Classification> {
         1 => Some(Classification::Deficient),
         _ => {
             let total;
-            if num % 2 == 0 {
-                total = (1..=num / 2)
-                    .filter(|x| num.rem_euclid(*x) == 0)
-                    .sum::<u64>();
-            } else {
-                total = (1..=num / 3)
-                    .filter(|x| num.rem_euclid(*x) == 0)
-                    .sum::<u64>();
+
+            let mut divisor = 2;
+            while num % divisor != 0 {
+                divisor += 1;
             }
+
+            total = (1..=num / divisor)
+                .filter(|x| num % *x == 0)
+                .sum::<u64>();
 
             match total.cmp(&num) {
                 Greater => return Some(Classification::Abundant),
