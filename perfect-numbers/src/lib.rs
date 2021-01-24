@@ -13,14 +13,12 @@ pub fn classify(num: u64) -> Option<Classification> {
         0 => None,
         1 => Some(Classification::Deficient),
         _ => {
-            let total;
-
             let mut divisor = 2;
             while num % divisor != 0 {
                 divisor += 1;
             }
 
-            total = (1..=num / divisor)
+            let total = (1..=num / divisor)
                 .filter(|x| num % *x == 0)
                 .sum::<u64>();
 
