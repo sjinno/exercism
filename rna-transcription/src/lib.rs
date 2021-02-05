@@ -33,17 +33,7 @@ impl Dna {
     }
 
     pub fn into_rna(self) -> Rna {
-        let mut rna = Vec::with_capacity(self.dna.len());
-        self.dna.chars().into_iter().for_each(|n| match n {
-            'G' => rna.push('C'),
-            'C' => rna.push('G'),
-            'T' => rna.push('A'),
-            'A' => rna.push('U'),
-            _ => (),
-        });
-        Rna {
-            rna: rna.iter().collect::<String>(),
-        }
+        self.into()
     }
 }
 
@@ -63,6 +53,22 @@ impl Rna {
             })
         } else {
             Err(valid_count)
+        }
+    }
+}
+
+impl Into<Rna> for Dna {
+    fn into(self) -> Rna {
+        let mut rna = Vec::with_capacity(self.dna.len());
+        self.dna.chars().into_iter().for_each(|n| match n {
+            'G' => rna.push('C'),
+            'C' => rna.push('G'),
+            'T' => rna.push('A'),
+            'A' => rna.push('U'),
+            _ => (),
+        });
+        Rna {
+            rna: rna.iter().collect::<String>(),
         }
     }
 }
