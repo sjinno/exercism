@@ -2,7 +2,7 @@ pub fn nth(n: usize) -> Option<usize> {
     match n {
         0 => None,
         1 => Some(2),
-        _ => (3..).step_by(2).filter(|x| is_prime(x)).nth(n - 2),
+        _ => (3..).step_by(2).filter(is_prime).nth(n - 2),
     }
 }
 
