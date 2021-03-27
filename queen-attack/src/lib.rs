@@ -25,10 +25,7 @@ impl Queen {
         let is_same_rank = |other: &Queen| -> bool { self.0 == other.0 };
         let is_same_file = |other: &Queen| -> bool { self.1 == other.1 };
         let is_diagonal = |other: &Queen| -> bool {
-            match (self.0 - other.0, self.1 - other.1) {
-                (a, b) if a.abs() == b.abs() => true,
-                _ => false,
-            }
+            matches!((self.0 - other.0, self.1 - other.1), (a, b) if a.abs() == b.abs())
         };
         is_same_rank(other) || is_same_file(other) || is_diagonal(other)
     }
