@@ -1,25 +1,28 @@
-pub struct Triangle {
-    a: u64,
-    b: u64,
-    c: u64,
+use std::ops::Add;
+
+pub struct Triangle<T> {
+    sides: [T; 3],
 }
 
-impl Triangle {
-    pub fn build(sides: [u64; 3]) -> Option<Triangle> {
-        let triangle = Triangle {
-            a: sides[0],
-            b: sides[1],
-            c: sides[2],
-        };
-
-        match triangle.is_triangle() {
-            true => Some(triangle),
-            false => None,
+impl<T> Triangle<T>
+where
+    T: Copy + Default + PartialOrd + Add<T, Output = T>,
+{
+    pub fn build(sides: [T; 3]) -> Option<Triangle<T>> {
+        if sides.iter().any(|n| *n == T::default()) {
+            return None;
+        }
+        let triangle = Triangle { sides };
+        let (a, b, c) = (sides[0], sides[1], sides[2]);
+        if a + b >= c && b + c >= a && c + a >= b {
+            Some(triangle)
+        } else {
+            None
         }
     }
 
     pub fn is_equilateral(&self) -> bool {
-        self.a == self.b && self.b == self.c
+        self.sides[0] == self.sides[1] && self.sides[1] == self.sides[2]
     }
 
     pub fn is_scalene(&self) -> bool {
@@ -27,21 +30,8 @@ impl Triangle {
     }
 
     pub fn is_isosceles(&self) -> bool {
-        self.a == self.b || self.a == self.c || self.b == self.c
+        self.sides[0] == self.sides[1]
+            || self.sides[0] == self.sides[2]
+            || self.sides[1] == self.sides[2]
     }
-
-    fn is_triangle(&self) -> bool {
-        if self.a == 0 || self.b == 0 || self.c == 0 {
-            false
-        } else {
-            check_triangularity(&self.a, &self.b, &self.c)
-                && check_triangularity(&self.a, &self.c, &self.b)
-                && check_triangularity(&self.b, &self.c, &self.a)
-        }
-    }
-}
-
-fn check_triangularity(a: &u64, b: &u64, c: &u64) -> bool {
-    let two_sides = a + b;
-    two_sides >= *c
 }
