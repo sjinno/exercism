@@ -9,7 +9,7 @@ impl<T> Triangle<T>
 where
     T: Add<Output = T> + Copy + PartialOrd + Zero,
 {
-    pub fn build(sides: [T; 3]) -> Option<Triangle<T>> {
+    pub fn build(sides: [T; 3]) -> Option<Self> {
         if sides.iter().any(|n| n.is_zero()) {
             return None;
         }
