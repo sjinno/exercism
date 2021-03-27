@@ -1,4 +1,4 @@
-use num::Zero;
+use num::Zero; // num = "0.4"
 use std::ops::Add;
 
 pub struct Triangle<T> {
@@ -10,7 +10,7 @@ where
     T: Add<Output = T> + Copy + PartialOrd + Zero,
 {
     pub fn build(sides: [T; 3]) -> Option<Triangle<T>> {
-        if sides.iter().any(|n| *n == T::zero()) {
+        if sides.iter().any(|n| n.is_zero()) {
             return None;
         }
         let triangle = Triangle { sides };
