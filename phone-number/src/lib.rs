@@ -7,7 +7,7 @@ pub fn number(user_number: &str) -> Option<String> {
     match cleaned_user_number.len() {
         10 => validate_phone_number(&cleaned_user_number),
         11 if cleaned_user_number[0] == '1' => validate_phone_number(&cleaned_user_number[1..]),
-        12 if cleaned_user_number[0..2] == ['+', '1'] => {
+        12 if cleaned_user_number[..2] == ['+', '1'] => {
             validate_phone_number(&cleaned_user_number[2..])
         }
         _ => None,
