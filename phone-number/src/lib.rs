@@ -18,7 +18,7 @@ fn validate_phone_number(number: &[char]) -> Option<String> {
     match (number[0], number[3]) {
         //     Area code != 0 or 1.
         // Exchange code != 0 or 1.
-        ('0', _) | ('1', _) | (_, '0') | (_, '1') => None,
+        ('0'..='1', _) | (_, '0'..='1') => None,
         _ => Some(number.iter().collect()),
     }
 }
