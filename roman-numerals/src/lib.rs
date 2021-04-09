@@ -56,27 +56,23 @@ impl From<u32> for Roman {
         let mut num = num;
         let mut divisor = 1000;
 
-        let to_iter = iter::from_fn(move || {
-            let quotient = num / divisor;
-            num -= quotient * divisor;
-            divisor /= 10;
-            Some(quotient)
-        })
-        .take(4)
-        .collect::<Vec<_>>();
-
         Self(
-            to_iter
-                .iter()
-                .enumerate()
-                .map(|(i, n)| match i {
-                    0 => Self::get_roman_numeral(1000, n),
-                    1 => Self::get_roman_numeral(100, n),
-                    2 => Self::get_roman_numeral(10, n),
-                    3 => Self::get_roman_numeral(1, n),
-                    _ => unreachable!(),
-                })
-                .collect::<String>(),
+            iter::from_fn(move || {
+                let quotient = num / divisor;
+                num -= quotient * divisor;
+                divisor /= 10;
+                Some(quotient)
+            })
+            .take(4)
+            .enumerate()
+            .map(|(i, n)| match i {
+                0 => Self::get_roman_numeral(1000, &n),
+                1 => Self::get_roman_numeral(100, &n),
+                2 => Self::get_roman_numeral(10, &n),
+                3 => Self::get_roman_numeral(1, &n),
+                _ => unreachable!(),
+            })
+            .collect::<String>(),
         )
     }
 }
