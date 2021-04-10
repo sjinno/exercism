@@ -52,22 +52,16 @@ impl Rna {
 impl Into<Rna> for Dna {
     fn into(self) -> Rna {
         Rna {
-            rna: self
-                .dna
-                .chars()
-                .scan(String::new(), |state, n| {
-                    match n {
-                        'G' => state.push('C'),
-                        'C' => state.push('G'),
-                        'T' => state.push('A'),
-                        'A' => state.push('U'),
-                        _ => (),
-                    }
-                    Some(state.to_owned())
-                })
-                .last()
-                .unwrap()
-                .to_string(),
+            rna: self.dna.chars().fold(String::new(), |mut acc, n| {
+                match n {
+                    'G' => acc.push('C'),
+                    'C' => acc.push('G'),
+                    'T' => acc.push('A'),
+                    'A' => acc.push('U'),
+                    _ => (),
+                }
+                acc
+            }),
         }
     }
 }
