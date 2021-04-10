@@ -16,7 +16,7 @@ pub struct Rna {
 impl Dna {
     pub fn new(dna: &str) -> Result<Dna, usize> {
         let mut map = HashSet::<char>::new();
-        dna.chars().into_iter().for_each(|n| {
+        dna.chars().for_each(|n| {
             if DNA.contains(&n) {
                 map.insert(n);
             }
@@ -40,7 +40,7 @@ impl Dna {
 impl Rna {
     pub fn new(rna: &str) -> Result<Rna, usize> {
         let mut map = HashSet::<char>::new();
-        rna.chars().into_iter().for_each(|n| {
+        rna.chars().for_each(|n| {
             if RNA.contains(&n) {
                 map.insert(n);
             }
@@ -60,7 +60,7 @@ impl Rna {
 impl Into<Rna> for Dna {
     fn into(self) -> Rna {
         let mut rna = Vec::with_capacity(self.dna.len());
-        self.dna.chars().into_iter().for_each(|n| match n {
+        self.dna.chars().for_each(|n| match n {
             'G' => rna.push('C'),
             'C' => rna.push('G'),
             'T' => rna.push('A'),
