@@ -15,21 +15,17 @@ pub struct Rna {
 
 impl Dna {
     pub fn new(dna: &str) -> Result<Dna, usize> {
-        let mut map = HashSet::<char>::new();
-        dna.chars().for_each(|n| {
-            if DNA.contains(&n) {
-                map.insert(n);
-            }
-        });
-
-        let valid_count = map.len();
         if dna.chars().all(|n| DNA.contains(&n)) {
-            Ok(Dna {
+            return Ok(Dna {
                 dna: dna.to_string(),
-            })
-        } else {
-            Err(valid_count)
+            });
         }
+
+        Err(dna
+            .chars()
+            .filter(|n| DNA.contains(n))
+            .collect::<HashSet<char>>()
+            .len())
     }
 
     pub fn into_rna(self) -> Rna {
@@ -39,36 +35,39 @@ impl Dna {
 
 impl Rna {
     pub fn new(rna: &str) -> Result<Rna, usize> {
-        let mut map = HashSet::<char>::new();
-        rna.chars().for_each(|n| {
-            if RNA.contains(&n) {
-                map.insert(n);
-            }
-        });
-
-        let valid_count = map.len();
         if rna.chars().all(|n| RNA.contains(&n)) {
-            Ok(Rna {
+            return Ok(Rna {
                 rna: rna.to_string(),
-            })
-        } else {
-            Err(valid_count)
+            });
         }
+
+        Err(rna
+            .chars()
+            .filter(|n| RNA.contains(n))
+            .collect::<HashSet<_>>()
+            .len())
     }
 }
 
 impl Into<Rna> for Dna {
     fn into(self) -> Rna {
-        let mut rna = Vec::with_capacity(self.dna.len());
-        self.dna.chars().for_each(|n| match n {
-            'G' => rna.push('C'),
-            'C' => rna.push('G'),
-            'T' => rna.push('A'),
-            'A' => rna.push('U'),
-            _ => (),
-        });
         Rna {
-            rna: rna.iter().collect::<String>(),
+            rna: self
+                .dna
+                .chars()
+                .scan(String::new(), |state, n| {
+                    match n {
+                        'G' => state.push('C'),
+                        'C' => state.push('G'),
+                        'T' => state.push('A'),
+                        'A' => state.push('U'),
+                        _ => (),
+                    }
+                    Some(state.to_owned())
+                })
+                .last()
+                .unwrap()
+                .to_string(),
         }
     }
 }
