@@ -6,5 +6,5 @@ pub fn square(s: u32) -> u64 {
 }
 
 pub fn total() -> u64 {
-    (0..64).into_iter().fold(0, |acc, x| acc + 2u64.pow(x))
+    (0..64).fold(0, |acc, x| acc + 2u64.pow(x))
 }
