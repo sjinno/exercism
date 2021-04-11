@@ -16,16 +16,16 @@ pub struct Rna {
 impl Dna {
     pub fn new(dna: &str) -> Result<Dna, usize> {
         if dna.chars().all(|n| DNA.contains(&n)) {
-            return Ok(Dna {
+            Ok(Dna {
                 dna: dna.to_string(),
-            });
+            })
+        } else {
+            Err(dna
+                .chars()
+                .filter(|n| DNA.contains(n))
+                .collect::<HashSet<char>>()
+                .len())
         }
-
-        Err(dna
-            .chars()
-            .filter(|n| DNA.contains(n))
-            .collect::<HashSet<char>>()
-            .len())
     }
 
     pub fn into_rna(self) -> Rna {
@@ -36,16 +36,16 @@ impl Dna {
 impl Rna {
     pub fn new(rna: &str) -> Result<Rna, usize> {
         if rna.chars().all(|n| RNA.contains(&n)) {
-            return Ok(Rna {
+            Ok(Rna {
                 rna: rna.to_string(),
-            });
+            })
+        } else {
+            Err(rna
+                .chars()
+                .filter(|n| RNA.contains(n))
+                .collect::<HashSet<_>>()
+                .len())
         }
-
-        Err(rna
-            .chars()
-            .filter(|n| RNA.contains(n))
-            .collect::<HashSet<_>>()
-            .len())
     }
 }
 
