@@ -1,6 +1,6 @@
 use std::fmt;
 
-use luhn_from::Luhn as LuhnFrom;
+use luhn_from::Luhn as FromLuhn;
 
 pub trait Luhn {
     fn valid_luhn(&self) -> bool;
@@ -8,6 +8,6 @@ pub trait Luhn {
 
 impl<T: fmt::Display> Luhn for T {
     fn valid_luhn(&self) -> bool {
-        LuhnFrom::from(self).0
+        FromLuhn::from(self).0
     }
 }
